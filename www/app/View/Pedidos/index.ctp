@@ -16,3 +16,8 @@
     </tr>
     <?php endforeach; ?>
 </table>
+
+<?php echo $this->Html->link(
+    'Criar pedido',
+    array('controller' => 'pedidos', 'action' => 'add')
+); ?>
