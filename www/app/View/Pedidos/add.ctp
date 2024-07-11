@@ -1,7 +1,7 @@
 
 <h1>Criar pedido</h1>
 <?php
-echo $this->Form->create('Post');
+echo $this->Form->create('Pedido');
 echo $this->Form->select('Cliente', Hash::combine($clientes, '{n}.clientes.nome', '{n}.clientes.nome'),
     ['empty' => 'Selecione o cliente', 'label' => 'Selecione o cliente'] 
 );?>
@@ -13,5 +13,6 @@ echo $this->Form->select('Produtos', Hash::combine($produtos, '{n}.produtos.nome
 );
 echo $this->Form->input('Observações', array('rows' => '3'));
 echo $this->Form->end('Criar pedido');
+
 ?>
 
