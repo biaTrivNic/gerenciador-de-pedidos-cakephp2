@@ -29,12 +29,9 @@ class PedidosController extends AppController
 
             $clienteId = $this->Pedido->query('select id from clientes where nome = :nome', ['nome' => $clienteSelecionado]);
 
-            $this->Pedido->query('
-                insert into pedidos (cliente_id, observacao, created, modified) values (:clienteId, :observacao, NOW(), NOW())
-            ', [
-                'clienteId' => $clienteId[0]['clientes']['id'],
-                'observacao' => $observacoes
-            ]);
+            $this->Pedido->query("
+                insert into pedidos (cliente_id, observacao, created, modified) values ({$clienteId[0]['clientes']['id']}, '{$observacoes}', NOW(), NOW())
+            ");
 
             $lastId = $this->Pedido->query('select last_insert_id() as id');
             $pedidoId = $lastId[0][0]['id'];
@@ -43,20 +40,13 @@ class PedidosController extends AppController
                 $produtoId = $this->Pedido->query('select id from produtos where nome = :nome', ['nome' => $produto]);
 
                 if ($produtoId) {
-                    $this->Pedido->query('
-                        insert into produtos_pedidos (pedido_id, produto_id, vl_unitario, qt_produto, unidade, observacao, created, modified) values (:pedidoId, :produtoId, :vlUnitario, :qtProduto, :unidade, :observacao, NOW(), NOW())
-                    ', [
-                        'pedidoId' => $pedidoId,
-                        'produtoId' => $produtoId[0]['produtos']['id'],
-                        'vlUnitario' => 0,
-                        'qtProduto' => 1,
-                        'unidade' => '',
-                        'observacao' => '',
-                    ]);
+                    $this->Pedido->query("
+                        insert into produtos_pedidos (pedido_id, produto_id, vl_unitario, qt_produto, unidade, observacao, created, modified) values ({$pedidoId}, {$produtoId[0]['produtos']['id']}, 0, 1, '', '', NOW(), NOW())
+                    ");
                 }
             }
 
-            return $this->redirect(['action' => 'add']);
+            return $this->redirect(['action' => 'index']);
         }
     }
 }
